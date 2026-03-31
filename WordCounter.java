@@ -10,28 +10,32 @@ public class WordCounter {
             Pattern regex = Pattern.compile("[a-zA-Z0-9']+"); 
             Matcher matcher = regex.matcher(text); 
 
-            int count = 0; 
+            int totalCount = 0; 
+            int countThroughStopword = 0;
             boolean foundStopword = false; 
 
             while(matcher.find()) {
                 String word = matcher.group(); 
-                count++; 
+                totalCount++; 
+
+                if(!foundStopword) {
+                    countThroughStopword++; 
+                }
 
                 if(stopword != null && word.equals(stopword)) {
                     foundStopword = true; 
-                    break; 
                 }
             }
 
-            if(count < 5) {
-                throw new TooSmallText("TooSmallText"); 
+            if(totalCount < 5) {
+                throw new TooSmallText(totalCount); 
             }
 
             if(stopword != null && !foundStopword) {
-                throw new InvalidStopwordException("Stopword not found: " + stopword); 
+                throw new InvalidStopwordException(stopword); 
             }
 
-            return count; 
+            return countThroughStopword; 
 
         }
     
