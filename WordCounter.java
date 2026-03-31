@@ -23,12 +23,12 @@ public class WordCounter {
                 }
             }
 
-            if(stopword != null && !foundStopword) {
-                throw new InvalidStopwordException("Stopword not found: " + stopword); 
-            }
-
             if(count < 5) {
                 throw new TooSmallText("TooSmallText"); 
+            }
+
+            if(stopword != null && !foundStopword) {
+                throw new InvalidStopwordException("Stopword not found: " + stopword); 
             }
 
             return count; 
@@ -65,6 +65,43 @@ public class WordCounter {
     }
 
     public static void main(String [] args) {
+        Scanner keyboard = new Scanner(System.in); 
+        String choice = keyboard.nextLine();
+        while(!choice.equals("1") && !choice.equals("2")) {
+            choice = keyboard.nextLine(); 
+        }
 
+        String stopword = null; 
+        if(args.length > 1) {
+            stopword = args[1];
+        }
+
+        StringBuffer text; 
+        if(choice.equals("1")) {
+            try {
+                text = processFile(args[0]); 
+            } catch (EmptyFileException e) {
+                text = new StringBuffer(""); 
+            }
+        } else {
+            text = new StringBuffer(args[0]);
+        }
+
+        try {
+            int count = processText(text, stopword); 
+            System.out.println("Found " + count + " words."); 
+        } catch (TooSmallText e) { 
+            System.out.println(e); 
+        } catch (InvalidStopwordException e) {
+            String newStopword = keyboard.nextLine(); 
+            try {
+                int count = processText(text, stopword); 
+                System.out.println("Found " + count + " words."); 
+            } catch (TooSmallText e2) {
+                System.out.println(e2); 
+            } catch (InvalidStopwordException e2) {
+                System.out.println(e2);
+            }
+        }
     }
 }
