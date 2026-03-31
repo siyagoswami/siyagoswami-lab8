@@ -35,7 +35,34 @@ public class WordCounter {
 
         }
     
-    public static StringBuffer
+    public static StringBuffer processFile(String path) throws EmptyFileException {
+        Scanner keyboard = new Scanner(System.in); 
+        Scanner fileScanner = null; 
+
+        while(fileScanner == null) {
+            try {
+                fileScanner = new Scanner(new File(path)); 
+            } catch (FileNotFoundException e) {
+                System.out.println("File not found. Enter another file name: "); 
+                path = keyboard.nextLine(); 
+            }
+        }
+
+        StringBuffer contents = new StringBuffer(); 
+        while(fileScanner.hasNextLine()) {
+            contents.append(fileScanner.nextLine()); 
+            if(fileScanner.hasNextLine()) {
+                contents.append("\n"); 
+            }
+        }
+
+        fileScanner.close();
+        if(contents.length() == 0) {
+            throw new EmptyFileException(path); 
+        }
+
+        return contents; 
+    }
 
     public static void main(String [] args) {
 
