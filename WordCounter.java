@@ -70,8 +70,10 @@ public class WordCounter {
 
     public static void main(String [] args) {
         Scanner keyboard = new Scanner(System.in); 
+        System.out.println("Enter 1 to process a file or 2 to process text:"); 
         String choice = keyboard.nextLine();
         while(!choice.equals("1") && !choice.equals("2")) {
+            System.out.println("Invalid option. Please enter 1 or 2:"); 
             choice = keyboard.nextLine(); 
         }
 
@@ -97,6 +99,7 @@ public class WordCounter {
         } catch (TooSmallText e) { 
             System.out.println(e); 
         } catch (InvalidStopwordException e) {
+            System.out.println("Invalid stopword. Please enter another stopword:");
             String newStopword = keyboard.nextLine(); 
             try {
                 int count = processText(text, stopword); 
